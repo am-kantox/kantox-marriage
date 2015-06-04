@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'kantox/marriage'
+
+def usage msg
+  STDERR.puts <<EOF
+  Usage: #{ARGV[0]} '[5,4, 3]' '[ 8, 1, 11]' 0
+         The first two parameters are both arrays to compare,
+             third one is a reference value (defaults to 0).
+         Error message: #{msg}
+EOF
+  exit
+end
+
+usage 'Wrong amount of arguments (expected 2..3)' if ARGV.length < 2
+
+require 'json'
+@a = []
+(0..1).each do |i|
+  @a << JSON.parse(ARGV[i]) rescue usage "#{i == 1 ? 'First' : 'Second'} argument should be array of integers. Did you forget quotes around?"
+end
+
+@sum = ARGV[2].to_i rescue 0
+@meth = $0 =~ /sss_approx\Z/ ? :approx : :matrix
+
+STDERR.print "Input accepted:\n\t#{@a[0]}\n\t#{@a[1]}\nResult is:\n\t"
+STDOUT.print Kantox::Marriage.go @meth, *@a, @sum
+STDERR.puts

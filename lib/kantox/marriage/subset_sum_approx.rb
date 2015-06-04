@@ -27,7 +27,7 @@ module Kantox
         @array.each_with_index do |elem, i|
           old_subsets = subsets
           subsets = {}
-          #add current element to the sum of previously included subsets
+          # add current element to the sum of previously included subsets
           old_subsets.each do |prev_sum, subset|
             # the following three lines generate the news sums and the associated subsets
             subsets[prev_sum] = subset
